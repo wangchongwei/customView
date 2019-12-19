@@ -1,4 +1,4 @@
-package com.justin.customview;
+package com.justin.customview.customview;
 /*
  * created by Justin on 2019-12-12
  * email: wcw1992yu@163.com
@@ -8,21 +8,15 @@ package com.justin.customview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Point;
-import android.icu.util.Measure;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
+
+import com.justin.customview.R;
 
 public class MyView extends View {
 
@@ -141,7 +135,7 @@ public class MyView extends View {
         right = width - left;
         // 给四个方向都留点边距绘制其他
         top = top + 0;
-        left = left + 50;
+        left = left + 100;
         bottom = bottom - 50;
         right = right - 0;
         setMeasuredDimension(width, height);
@@ -236,8 +230,11 @@ public class MyView extends View {
         // 先绘制5条y轴标准线位置 取高度的90%作为图线的最高。
         float maxHeight = (float)((bottom - top) * 0.9);
         float itemHeight = maxHeight / 5;
+        int itemValue = yMax / 5;
         for(int i = 1; i <=5; i ++) {
             canvas.drawLine(left, bottom - itemHeight * i, left + 15, bottom - itemHeight * i, paint);
+            // 绘制y轴标准值
+            canvas.drawText(itemValue * i + "", left - 90, bottom - itemHeight * i, paint);
         }
 
         // 再绘制x轴的数据， x轴线的标准值就是x轴的值，数目也是xValue的值
@@ -251,12 +248,19 @@ public class MyView extends View {
             float y = bottom - maxHeight * yValue[i-1] / yMax;
             canvas.drawCircle(x, y, 10, paint);
 
+            // 绘制点与点之间的连线
             if(lastX > 0f) {
-
+                canvas.drawLine(lastX, lastY, x, y, paint);
             }
 
-        }
 
+            // 绘制x轴标准值
+            canvas.drawText(xValue[i-1], x, bottom + 50, paint);
+
+
+            lastX = x;
+            lastY = y;
+        }
     }
 
 
