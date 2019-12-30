@@ -7,4 +7,12 @@
 
     </declare-styleable>
 
+    <declare-styleable name="MyInput">
+        <attr name="title" format="string" />
+        <attr name="titleColor" format="color" />
+        <attr name="hintColor" format="color" />
+        <attr name="titleSize" format="dimension" />
+        <attr name="hintSize" format="dimension" />
+    </declare-styleable>
+
 </resources>
