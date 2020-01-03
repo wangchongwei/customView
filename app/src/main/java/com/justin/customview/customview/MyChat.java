@@ -13,6 +13,7 @@ import android.graphics.Path;
 import android.graphics.PointF;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -150,6 +151,13 @@ public class MyChat extends View {
             }
         }
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return super.onTouchEvent(event);
+    }
+
+
 
     public void start(int changeType){
         this.changeType = changeType;
