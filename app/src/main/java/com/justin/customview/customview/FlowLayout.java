@@ -8,13 +8,17 @@ package com.justin.customview.customview;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class FlowLayout extends ViewGroup {
+public class FlowLayout extends ViewGroup {
+
+    private final String TAG = "FlowLayout";
 
     private int mHorizontalSpacing = 18;
     private int mVerticalSpacing = 10;
@@ -35,14 +39,19 @@ class FlowLayout extends ViewGroup {
     }
 
 
+    private void recyle() {
+        allView.clear();
+        lineHeights.clear();
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
+        recyle();
+        // 获取各个偏距
         int paddingLeft = getPaddingLeft();
         int paddingRight = getPaddingRight();
         int paddingTop = getPaddingTop();
-        int paddingBottom = getPaddingBottom();
 
         // 先获取父容器能给的尺寸大小
         int selfWidth = MeasureSpec.getSize(widthMeasureSpec);
@@ -113,12 +122,38 @@ class FlowLayout extends ViewGroup {
         int realWidth = widthMode == MeasureSpec.EXACTLY ? selfWidth : parentNeededWidth;
         int realHeight = heightMode == MeasureSpec.EXACTLY ? selfHeight : parentNeededHeight;
 
+        Log.e(TAG, "onMeasure: realWidth = " + realWidth);
+        Log.e(TAG, "onMeasure: realHeight = " + realHeight);
         setMeasuredDimension(realWidth, realHeight);
 
     }
 
     @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        return super.onInterceptTouchEvent(ev);
+    }
 
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        int left = getPaddingLeft();
+        int top = getPaddingTop();
+
+        Log.e(TAG, "onLayout: top : " + top);
+
+        for(int i = 0; i < allView.size(); i ++) {
+            List<View> lineView = allView.get(i);
+            int lineHeight = lineHeights.get(i); // 该行的高度
+            for(int j = 0; j < lineView.size(); j ++) {
+                View childView = lineView.get(j);
+                int right = left + childView.getMeasuredWidth();
+                int bottom = top + childView.getMeasuredHeight();
+                Log.d(TAG, "onLayout: left = " + left + "  top = " + top + "  bottom = " + bottom);
+                childView.layout(left, top, right, bottom);
+
+                left = right + mHorizontalSpacing;
+            }
+            top = lineHeight + mVerticalSpacing + top;
+            left = getPaddingLeft();
+        }
     }
 }
