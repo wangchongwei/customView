@@ -4,17 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Main2Activity">
+    tools:context=".SkinActivity"
+    android:background="@color/colorPrimary"
+    >
 
-    <ImageView
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="换肤"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/reset"
+        android:id="@+id/replace_skin"
+        />
+
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/replace_skin"
         app:layout_constraintRight_toRightOf="parent"
-        android:id="@+id/fishView"
-
+        android:text="还原"
+        android:id="@+id/reset"
         />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
